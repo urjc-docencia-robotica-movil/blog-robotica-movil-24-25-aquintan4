@@ -98,6 +98,27 @@ Para realizar la espiral he seguido los apuntes del enunciado y he seguido la f�
 
 Notamos que `R = V / W`, es decir, el radio es directamente proporcional a la velocidad lineal (V) e inversamente proporcional a la velocidad angular (W). Por lo tanto, para aumentar el radio, podemos optar por aumentar la velocidad lineal o disminuir la velocidad angular, manteniendo constante la que no elijamos modificar. Decidí probar ambos enfoques. Primero intenté mantener V constante y ajustar W, ya que parecía más lógico. Sin embargo, me encontré rápidamente con un problema: los valores iniciales eran difíciles de escoger, ya que la velocidad angular inicial resultaba muy elevada. Esto me llevó a añadir parámetros adicionales como clamps, complicando el diseño innecesariamente. Además, el resultado no fue tan satisfactorio, ya que el límite impuesto a la velocidad angular hacía que la espiral tuviera forma de *donut*.
 
-Modificando V, en lugar de W, dió resultado ya que era más intuitivo hacer crecer V con el tiempo, el único problema que encuentro fué el que me llevó inicialmente a usar W, cuando la espiral está avanzada V es muy grande y una colisión del robot puede ser peligrosa para el dispositivo, el entorno o los usuarios. Aún así el resultado es satisfactorio y este problema está solucionado usando un clamp y dejando el tiempo justo a la espiral para que mantenga los giros juntos.
+Al modificar V en lugar de W, obtuve mejores resultados, ya que hacer que V creciera con el tiempo resultaba más intuitivo. Sin embargo, el problema que inicialmente me llevó a usar W volvió a surgir: cuando la espiral está avanzada, V se vuelve demasiado grande, lo que podría hacer que una colisión del robot sea peligrosa tanto para el dispositivo como para el entorno o los usuarios. A pesar de esto, el resultado final es satisfactorio, ya que este problema se solucionó aplicando un clamp a la velocidad lineal y ajustando el tiempo de la espiral para que los giros se mantengan controlados y cercanos.
 
+# 4. Posibles Problemas en el código
+Aumentar la aleatoriedad me ha permitido maximizar las posibilidades de cubrir todas las zonas del mapa, ya que no tengo una forma de navegar directamente hacia ellas. Sin embargo, esto también ha generado un problema: a veces el robot tiende a repetir en exceso las mismas áreas de la casa. Aunque eventualmente logra salir de habitaciones o zonas estrechas, en algunos casos puede llevar demasiado tiempo. Para abordar el problema, intenté implementar nuevos estados. Si el robot chocaba muchas veces mientras realizaba el comportamiento Bump & Go, seguiría una de las paredes durante un tiempo. Esto debería permitirle salir de zonas estrechas. Sin embargo, al intentar aplicar el código, me di cuenta de que esta estrategia no era la mejor. Si bien no había problemas para encontrar la pared y mantenerme recto hasta que el láser detectara un obstáculo a una distancia, girar presentaba complicaciones (diagrama más abajo). Aunque mi implementación funcionaba razonablemente bien, no resolvía de manera efectiva el problema en la práctica. Este fragmento de código que adjunto no lo he utilizado al final ya que no me parecía una buena solución del problema, ya que no podemos desplazarnos distancias determinadas (sea en linea recta o en ángulo).
+```python3
+    elif (state == FSM_States.ALIGNING_WITH_WALL):
+        if (has_timer_expired() or HAL.getBumperData().state == 1):
+            go_state(FSM_States.FORWARDING, State_Duration.ENDLESS_DURATION)
+        HAL.setW(0.5 * turn_direction)
+        laser_data = HAL.getLaserData()
+        if (len(laser_data.values) <= 0):
+            go_state(FSM_States.STOP)
+        if (turn_direction == 1): index = 179
+        else: index = 0
+        tolerance = 0.2
+        if (abs(laser_data.values[index] - laser2wall) < tolerance):
+            go_state(FSM_States.FOLLOWING_WALL, timer_remaining(), new_turn_direction=turn_direction)
+    
+    elif (state == FSM_States.FOLLOWING_WALL):
+      # Lógica para seguir la pared
+```
+# 5. Resultado
+https://www.dropbox.com/scl/fi/86alzd06xgw86v0mzgaui/VacumCleaner-Result.webm?rlkey=4desne1t16ecs4js56kjxqei9&st=aqnt8nzt&dl=0
 
