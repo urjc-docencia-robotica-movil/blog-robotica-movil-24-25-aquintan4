@@ -8,3 +8,4 @@ La otra necesidad de un **producto robótico** es la **robustez**. Para que mi c
 
 *Este es el diagrama de estados de mi FSM:*
 
+![Screenshot from 2024-09-29 22-11-20](https://github.com/user-attachments/assets/423e667a-749d-4791-8c3f-8ab2d06676b5)
