@@ -120,5 +120,6 @@ Aumentar la aleatoriedad me ha permitido maximizar las posibilidades de cubrir t
       # Lógica para seguir la pared
 ```
 # 5. Resultado
+El resultado varía en cada ejecución debido a la aleatoriedad que hemos añadido, pero considero que es bastante bueno con solo 5 minutos de ejecución.
 https://www.dropbox.com/scl/fi/86alzd06xgw86v0mzgaui/VacumCleaner-Result.webm?rlkey=4desne1t16ecs4js56kjxqei9&st=aqnt8nzt&dl=0
 
