@@ -92,3 +92,8 @@ while True:
         HAL.setV(0)
         HAL.setW(0)
 ```
+# 3. La espiral
+Para realizar la espiral he seguido los apuntes del enunciado y he seguido la fórmula del enunciado:
+` V = W * R`
+
+Notamos que `R = V / W`, es decir, el radio es directamente proporcional a la velocidad lineal (V) e inversamente proporcional a la velocidad angular (W). Por lo tanto, para aumentar el radio, podemos optar por aumentar la velocidad lineal o disminuir la velocidad angular, manteniendo constante la que no elijamos modificar. Decidí probar ambos enfoques. Primero intenté mantener V constante y ajustar W, ya que parecía más lógico. Sin embargo, me encontré rápidamente con un problema: los valores iniciales eran difíciles de escoger, ya que la velocidad angular inicial resultaba muy elevada. Esto me llevó a añadir parámetros adicionales como clamps, complicando el diseño innecesariamente. Además, el resultado no fue tan satisfactorio, ya que el límite impuesto a la velocidad angular hacía que la espiral tuviera forma de donut.
