@@ -46,5 +46,12 @@ El método establece como queremos aproximar los contornos, añadir más puntos 
 * `cv.CHAIN_APPROX_SIMPLE`: Que reduce la cantidad de puntos en el contorno, es el que usaremos para la linea.
 * `cv.CHAIN_APPROX_NONE`: Guarda todos los puntos del contorno sin ninguna reducción.
 
-  
+Esta información la he encontrado en el blog anteriormente mencionado y en la [documentación de opencv](https://docs.opencv.org/4.x/d4/d73/tutorial_py_contours_begin.html)
+
+Una vez tenemos el contorno de la imagen debemos calcular el centroide, para ello utilizaremos el método `moments()`. Para calcular un determinado momento de la imagen, que son características estádisticas de una imagen para describir su forma, posición y otras propiedades. En las imágenes digitales se utilizan para resumir la información sobre la densidad o el color (solo densidad en nuestro caso). Los momentos de la imagen, sirven para calcular el centroide con la siguiente fórmula:
+```python3
+cx =   (M10 / M00 )
+cy =  ( M01 / M00 )
+```
+Siendo M00 el momento de orden 0, que representan el area total de la forma de la imagen, se calculan (en imagenes binarias) sumando el número de pixes blancos (en nuestro caso los pixeles que han pasado el filtro de color. M01 y M10 denotan los momentos de orden 1, se utilizan para calcular la posición del centroide. M10 es el momento en relación al eje x y M01 es el momento en relación al eje y.
 
