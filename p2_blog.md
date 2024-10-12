@@ -19,8 +19,11 @@ del Hue(Tono) para el color que queremos filtrar.
   La herramienta para recortar en cv:
   ```python3
   # Definir las coordenadas
-  # x e y son las coordenadas del punto superior izquierdo
-  x, y, width, height = 100, 100, 300, 300
   # Recortar la imagen utilizando slicing de NumPy
-  cropped_image = image[y:y+height, x:x+width]
+  cropped_image = image[rango columnas, rango filas]
   ```
+  Haciendo pruebas compruebo que la parte superior de la imagen, no aporta ningúna información ya que la linea del horizonte se encuentra a mitad de pantalla, de todos modos cuando haya velocidades altas dejaré un
+  margen de la parte superior por si hay desniveles y para evitar errores. En las velocidades bajas también recortaré la parte de abajo ya que no me aporta información relevante y es tiempo extra de cálculo. No he recortado el ancho de la imagen por el momento por que no sé como reaccionará a las curvas.
+
+He marcado los límites que utilizaré dependiendo de la velocidad (Región naranja cuando velocidad es alta), Región azul (Cuando velocidad es más baja):
+![image](https://github.com/user-attachments/assets/39931016-e467-448b-9a74-3f8ab6a2e652)
