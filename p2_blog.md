@@ -33,8 +33,18 @@ Ahora tengo una imagen, con la linea filtrada y quiero obtener el **Centroide** 
 
 El **Centroide** representa el "centro de masas" o más bien "centro de puntos" de una forma geométrica, donde hay una mayor densidad de puntos. En nuestro caso **representará el centro de la linea**. Para ello tenemos que trabajar con imágenes binarias. La máscara nos indicaba de si cada pixel de nuestra imagen ha pasado el filtro de color (pixel en blanco) o no (pixel en negro), por lo tanto es una imagen binaria que podemos utilizar para calcular el centroide:
 
-Ahora utilizaré el método de la biblioteca CV2 `findContours()`:
+Para calcular el centroide tendremos que obtener el contorno de la linea. El contorno que una **lista de puntos** que uniendolos de forma ordenada "dibujan" los bordes de la forma, para ello utilizaremos el método de la biblioteca CV2 `findContours()`,
 ```python3
-contours, hierarchy = cv.findContours(image, mode, method)
+contours, hierarchy = cv.findContours(binary_image, mode, method)
 ```
+El modo establece el modo de recuperación de contornos. Podemos utilizar 3 modos:
+* `cv.RETR_EXTERNAL`: **Es el que usaremos en nuestra detección de la linea**, recupera solo los contornos externos e ignora los internos
+* `cv.RETR_LIST`:  Recupera todos los contornos y no establece ninguna relación jerárquica entre ellos, la jerarquía permite saber si un contorno es hijo de otro, organiza la estructura de los contornos. En nuestra aplicación no es muy interesante.
+* `cv.RETR_TREE`: Recupera todos los contornos y establece una relación jerárquica.
+
+El método establece como queremos aproximar los contornos, añadir más puntos a la lista o establecer los puntos clave, podemos usar dos modos:
+* `cv.CHAIN_APPROX_SIMPLE`: Que reduce la cantidad de puntos en el contorno, es el que usaremos para la linea.
+* `cv.CHAIN_APPROX_NONE`: Guarda todos los puntos del contorno sin ninguna reducción.
+
+  
 
