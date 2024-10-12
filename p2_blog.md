@@ -27,3 +27,14 @@ del Hue(Tono) para el color que queremos filtrar.
 
 He marcado los límites que utilizaré dependiendo de la velocidad (Región naranja cuando velocidad es alta), Región azul (Cuando velocidad es más baja):
 ![image](https://github.com/user-attachments/assets/39931016-e467-448b-9a74-3f8ab6a2e652)
+
+# 1. Centro de la linea (Referencia para controlar el coche)
+Ahora tengo una imagen, con la linea filtrada y quiero obtener el **Centroide** de la imagen, para saber si esta centrado o hay algún error que corregir. Para ello he tenido que rebuscar buscar bastante información y el cálculo del centrómero está basado en la información de la siguiente [página](https://www.geeksforgeeks.org/python-opencv-find-center-of-contour/). Voy a explicarlo paso por paso:
+
+El **Centroide** representa el "centro de masas" o más bien "centro de puntos" de una forma geométrica, donde hay una mayor densidad de puntos. En nuestro caso **representará el centro de la linea**. Para ello tenemos que trabajar con imágenes binarias. La máscara nos indicaba de si cada pixel de nuestra imagen ha pasado el filtro de color (pixel en blanco) o no (pixel en negro), por lo tanto es una imagen binaria que podemos utilizar para calcular el centroide:
+
+Ahora utilizaré el método de la biblioteca CV2 `findContours()`:
+```python3
+contours, hierarchy = cv.findContours(image, mode, method)
+```
+
