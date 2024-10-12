@@ -55,3 +55,8 @@ cy =  ( M01 / M00 )
 ```
 Siendo M00 el momento de orden 0, que representan el area total de la forma de la imagen, se calculan (en imagenes binarias) sumando el número de pixes blancos (en nuestro caso los pixeles que han pasado el filtro de color. M01 y M10 denotan los momentos de orden 1, se utilizan para calcular la posición del centroide. M10 es el momento en relación al eje x y M01 es el momento en relación al eje y.
 
+Resultado:
+![image](https://github.com/user-attachments/assets/172978c0-bb4a-4097-9437-a706b566ec42)
+![image](https://github.com/user-attachments/assets/ed44cb3a-0fcb-4def-bf15-b340ea166a93)
+
+
