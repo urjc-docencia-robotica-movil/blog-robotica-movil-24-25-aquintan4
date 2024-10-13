@@ -60,5 +60,21 @@ También me parece importar, que por la baja resolución u otros motivos hay vec
 Resultado: El círculo blanco denota la posición del centroide.
 ![image](https://github.com/user-attachments/assets/172978c0-bb4a-4097-9437-a706b566ec42)
 ![image](https://github.com/user-attachments/assets/ed44cb3a-0fcb-4def-bf15-b340ea166a93)
+# 2. Control del vehículo (PID)
+Primeramente vamos a definir el error como el desvio del centroide detectado en el eje x respecto del medio de la pantalla:
+```python3
+error = center_column - centroid_x
+```
+Una vez tenemos el error, podemos aplicar la fórmula del PID:
+```python3
+W = error * Kp + (error - last_error) * Kd + (sum_error) * Ki
+```
+Siendo `last_error` el error en la iteración anterior y `sum_error`la acumulación de los errores durante las iteraciones. A continuación tenemos que obtener unos valores para las constantes que consigan que el error se corrija de forma rápida, sin extremadas oscilaciones. Por lo tanto vamos a ir probando la combinación de las constantes y ajustandolas según sea necesario.
+Hay que tener especial cuidado con KI ya que hay que hacer un wipe del sumatorio cuando se cumplan algunas condiciones, en mi caso reinicio la vairiable si los actuadores están saturados (Si se alcanza W_Max) o cuando el error es 0. También hay que limitar la suma del error, saturarlo a la hora de sumar, también hay que tener en cuenta que como vamos a mucha frecuencia aumentará muy rápido por lo que hay que reducir Ki bastante.
+Destaco también el **clamp** tanto en la velocidad angular como en la lineal, tanto para limitarlo cuando el error es muy alto como para aumentar la velocidad lineal a una velocidad mínima cuando hay error bajo.
 
+He decidido que la relación entre la velocidad ángular y lineal sea inversamente proporcional con los clamps necesarios para que se cumpla la velocidad lineal mínima, y para evitar las divisiones entre cero (Con velocidad máxima)
+```python3
+V = 1 / abs(W)
+```
 
