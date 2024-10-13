@@ -77,4 +77,7 @@ He decidido que la relación entre la velocidad ángular y lineal sea inversamen
 ```python3
 V = 1 / abs(W)
 ```
+Aquí podemos ver el resultado con la implementación del cambio de vista (cuando superamos velocidad tomamos la referencia más lejos de la imagen, y cuando estamos por debajo tomamos la referencia más cerca) [ver resultado 1](https://www.dropbox.com/scl/fi/76s307brtakp77vuudcbb/result_1_p2.mp4?rlkey=govgvu2oo978uq1ypgl5fl86a&st=lb8jxxy3&dl=0)
+
+Luego haciendo pruebas, entendí que el cambio de cámara solo perjudica al resultado habiendo mucho cambio en la referencia que traen consigo errores. Por lo que elimine el cambio de cámara y dejé la parte más lejana [ver resultado 2](https://www.dropbox.com/scl/fi/gmmov38sg3j8jlrmn971z/result_2_p2.mp4?rlkey=2n1dpks17f6ydz0fv4wnm704f&st=wi7vodh9&dl=0)
 
