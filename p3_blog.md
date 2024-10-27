@@ -28,5 +28,8 @@ Sabemos las posiciones a las que tenemos que llegar con un método, estas coorde
  1. Primero obtenemos las coordenadas tanto del robot como del target, invocando a `HAL.getPose3d()` y a `target.getPose()`.
  2. Restamos obtenemos la distancia entre el target y el robot (destination - origin).
  3. Finalmente, necesitamos saber la orientación: para ello proyectamos el yaw del robot (la orientación en el plano horizontal) en el vector distancia, esto nos permite obtener como debe ajustar su orientación para alinearse con el target.
-Una vez sabemos donde está el target respecto a nuestro robot, tenemos la dirección y el sentido del vector atractivo. Ahora tenemos que ajustar el módulo ya que a distancias grandes la atracción sería tan alta que ignoraría la repulsión por completo. Para ello tenemos que saturar el módulo del vector atractivo a un valor razonable, también debemos limitar el vector a la baja, ya que cuando se acerque al target o esté justo en el la atracción sera 0 y el coche se dentendrá.
+Una vez sabemos donde está el target respecto a nuestro robot, tenemos la dirección y el sentido del vector atractivo.
+
+Ahora tenemos que ajustar el módulo ya que a distancias grandes la atracción sería tan alta que eclipsaría la repulsión por completo. Para ello tenemos que saturar el módulo del vector atractivo a un valor razonable, también debemos limitar el vector a la baja, ya que cuando se acerque al target o esté justo en el la atracción sera 0 y el coche se dentendrá.
+Para ello, he comenzado calculando el módulo y calcularía un factor de escala en caso de que no estuviera en el rango con la fórmula `scale_factor = max_magnitude / current_magnitude`. Computacionalmente hay soluciones más óptimas, a si que voy a limitar las componentes x e y del vector atractivo, esto hará que el vector atractivo se mantenga dentro de una circunferencia de radio ATTR_MAX sin mucho coste computacional.
 
