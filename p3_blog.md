@@ -10,13 +10,13 @@ Lo primero en lo que me centraré está práctica es en laser, creo que es lo qu
  
 ![Screenshot from 2024-10-27 16-38-39](https://github.com/user-attachments/assets/dc7c3d1f-30f4-493f-988d-8d6bb4fff7af)
 
-Matemáticamente: **Si la proyección en el eje horizontal de la medida del laser supera un máximo, descarto esa medida para la formación del vector repulsivo (tendrá peso de cero en la media ponderada).**
+Matemáticamente: **Si la proyección en el eje horizontal de la distancia medida por el laser, supera un máximo, descarto esa medida para la formación del vector repulsivo (tendrá peso de cero en la media ponderada).**
 He creado una constante y he visualizado cual sería el rango dentro del circuito:
 
 ![image](https://github.com/user-attachments/assets/84301fa7-57a2-4726-aaf0-aef1a5e673d7)
 ![Screenshot from 2024-10-27 17-17-14](https://github.com/user-attachments/assets/3d368389-d900-4d9e-ab98-14d488f96e93)
 
-Ahora lo siguiente que haré será hacer la media ponderada de todos los obstáculos que detecte el laser (dentro del rango antes mencionado). Como también tengo que aumentar la frecuencia evitando operaciones costosas (sobretodo la librería Math) he hecho un filtro más sencillo, antes del anteriormente mencionado: la distancia del obstaculo sin importar la dirección de detección, si no supone un peligro paso a comprobar el siguiente medida. Luego tenemos el filtro del cuadrado y finalmente tenemos la media ponderada. Para la ponderación he pensado que a una distancia más corta al obstáculo, es más relevante que una más lejana. La distancia y la repulsión son inversamente proporcionales, pero quiero que sea más brusco por lo que esta distancia irá al cuadrado. Es decir dentro de la media lo que importa cada vector viene dado por:
+Ahora lo siguiente que haré será **hacer la media ponderada de todos los obstáculos que detecte el laser** (dentro del rango antes mencionado). Como también tengo que aumentar la frecuencia evitando operaciones costosas (sobretodo la librería Math) he hecho un filtro más sencillo, antes del anteriormente mencionado: la distancia del obstaculo sin importar la dirección de detección, si no supone un peligro paso a comprobar el siguiente medida. Luego tenemos el filtro del cuadrado y finalmente tenemos la media ponderada. Para la ponderación he pensado que a una distancia más corta al obstáculo, es más relevante que una más lejana. La distancia y la repulsión son inversamente proporcionales, pero quiero que sea más brusco por lo que esta distancia irá al cuadrado. Es decir dentro de la media lo que importa cada vector viene dado por:
 
 ```python3
         sqr_laser_inv = (1/(laser_data.values[i] * laser_data.values[i]))
@@ -37,6 +37,6 @@ Para ello, he comenzado calculando el módulo y calcularía un factor de escala 
 Una vez calculadas las fuerzas repulsiva y atractiva, obtenemos el vector resultante sumando sus componentes. Esto nos da un solo vector que apunta en la dirección óptima hacia donde debemos movernos.
 En el código, calculamos W como el ángulo de este vector resultante usando la función `math.atan2`, lo que proporciona una transición suave en la dirección. A la vez, V representa el módulo de este vector resultante, indicando la velocidad. Tanto W como V están limitados con un clamp para mantenerlos dentro de los límites definidos, lo que permite que el movimiento sea controlado y evite los cambios bruscos.
 
-El resultado podemos encontrarlo [aquí](https://www.dropbox.com/scl/fi/zevwzjpga9kszei98l7hb/Screencast-from-2024-10-27-23-42-35.webm?rlkey=jvd57u6v6nc1rry6yaqkq2wdp&st=gq4pgvsj&dl=0), cabe destacar que el grabar pantalla ha hecho que se realintice la ejecución, aún así el resultado es bueno y cumple con lo esperado.
+Finalmente, tenemos que ir probando y ajustando los valores de `ALPHA` y `BETA` que hagan que el coche tenga el comportamiento adecuado, no siendo ni muy "osado" ni muy "medioso", sobretodo evitar el equilibrio de fuerzas siempre tiene que haber alguna mayor a la otra
 
-
+El resultado podemos encontrarlo [aquí](https://www.dropbox.com/scl/fi/zevwzjpga9kszei98l7hb/Screencast-from-2024-10-27-23-42-35.webm?rlkey=jvd57u6v6nc1rry6yaqkq2wdp&st=gq4pgvsj&dl=0), cabe destacar que el grabar pantalla ha hecho que se realentice la ejecución, aún así el resultado es bueno y cumple con lo esperado.
