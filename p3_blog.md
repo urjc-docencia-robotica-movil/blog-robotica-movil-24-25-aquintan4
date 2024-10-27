@@ -33,3 +33,10 @@ Una vez sabemos donde está el target respecto a nuestro robot, tenemos la direc
 Ahora tenemos que ajustar el módulo ya que a distancias grandes la atracción sería tan alta que eclipsaría la repulsión por completo. Para ello tenemos que saturar el módulo del vector atractivo a un valor razonable, también debemos limitar el vector a la baja, ya que cuando se acerque al target o esté justo en el la atracción sera 0 y el coche se dentendrá.
 Para ello, he comenzado calculando el módulo y calcularía un factor de escala en caso de que no estuviera en el rango con la fórmula `scale_factor = max_magnitude / current_magnitude`. Computacionalmente hay soluciones más óptimas, a si que voy a limitar las componentes x e y del vector atractivo, esto hará que el vector atractivo se mantenga dentro de una circunferencia de radio ATTR_MAX sin mucho coste computacional.
 
+## 3. Vector Resultante
+Una vez calculadas las fuerzas repulsiva y atractiva, obtenemos el vector resultante sumando sus componentes. Esto nos da un solo vector que apunta en la dirección óptima hacia donde debemos movernos.
+En el código, calculamos W como el ángulo de este vector resultante usando la función `math.atan2`, lo que proporciona una transición suave en la dirección. A la vez, V representa el módulo de este vector resultante, indicando la velocidad. Tanto W como V están limitados con un clamp para mantenerlos dentro de los límites definidos, lo que permite que el movimiento sea controlado y evite los cambios bruscos.
+
+El resultado podemos encontrarlo [aquí](https://www.dropbox.com/scl/fi/zevwzjpga9kszei98l7hb/Screencast-from-2024-10-27-23-42-35.webm?rlkey=jvd57u6v6nc1rry6yaqkq2wdp&st=gq4pgvsj&dl=0), cabe destacar que el grabar pantalla ha hecho que se realintice la ejecución, aún así el resultado es bueno y cumple con lo esperado.
+
+
