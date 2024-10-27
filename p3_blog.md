@@ -23,4 +23,10 @@ Ahora lo siguiente que haré será hacer la media ponderada de todos los obstác
 ```
 El resultado es bueno: la dirección y sentido es correcta. Reacciona bien ante la presencia de varios obstáculos cambiantes. Por otro lado, debo escalar el módulo, para que reaccione más exagerado. Esto ya estaba previsto y es un grado de libertad importante en el VFF llamaré a este escalar **beta**.
 
+## 3. El vector atractivo
+Sabemos las posiciones a las que tenemos que llegar con un método, estas coordenadas son globales, es decir están en coordenadas del mapa. Necesitamos hacer un cambio de coordenadas globales a relativas. Tenemos el ejemplo hecho pero desglosandolo:
+ 1. Primero obtenemos las coordenadas tanto del robot como del target, invocando a `HAL.getPose3d()` y a `target.getPose()`.
+ 2. Restamos obtenemos la distancia entre el target y el robot (destination - origin).
+ 3. Finalmente, necesitamos saber la orientación: para ello proyectamos el yaw del robot (la orientación en el plano horizontal) en el vector distancia, esto nos permite obtener como debe ajustar su orientación para alinearse con el target.
+Una vez sabemos donde está el target respecto a nuestro robot, tenemos la dirección y el sentido del vector atractivo. Ahora tenemos que ajustar el módulo ya que a distancias grandes la atracción sería tan alta que ignoraría la repulsión por completo. Para ello tenemos que saturar el módulo del vector atractivo a un valor razonable, también debemos limitar el vector a la baja, ya que cuando se acerque al target o esté justo en el la atracción sera 0 y el coche se dentendrá.
 
