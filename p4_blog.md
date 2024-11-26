@@ -44,4 +44,14 @@ En este caso, he vuelto a inicializar la frontera, manteniendo los nodos que ya 
 detenerse al alcanzar un único punto, ahora el proceso se detiene cuando se logran expandir un número de nodos concretos (marcados por una constante) o se vacía la frontera,
 lo que permite flexibilidad en la maniobra ya que conocemos más espacio por el que podemos desplazarnos con seguridad.
 
+A continuación, implementamos la **inflation layer**, cuyo propósito es expandir los obstáculos almacenados en la variable `walls` para que tengan un área de influencia. Esto nos permite evitar que el vehículo roce o toque estos
+obstáculos durante su navegación.
+
+Este proceso también se lleva a cabo utilizando **BFS** sobre cada uno de los nodos almacenados en `walls`, realizando un número finito de expansiones (definido en una constante). El coste asociado a cada celda de
+la **inflation layer** se calcula de la siguiente forma:
+
+        `cell_cost = (1 / euclidian_dist_node2obstacle) * scale_factor`
+
+El resultado de la parte Deliverativa:
+
 
