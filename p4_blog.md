@@ -88,7 +88,7 @@ De este modo, al calcular las direcciones relativas mediante **V** y **W**, pode
     W = np.clip(neighbour_relative[1], -3, 3)
 ```
 
-Resultado de la práctica:
+[Resultado de la práctica](https://www.dropbox.com/scl/fi/7dxoeynumvftqq7bs6c98/p4_result.webm?rlkey=9rzqxjdgab1gu7005lpxn7rfz&st=v3nxrk73&dl=0)
 
 
 
