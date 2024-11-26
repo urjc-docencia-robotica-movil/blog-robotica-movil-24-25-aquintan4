@@ -54,4 +54,5 @@ la **inflation layer** se calcula de la siguiente forma:
 
 El resultado de la parte Deliverativa:
 
+[Screencast from 2024-11-26 23-24-22.webm](https://github.com/user-attachments/assets/effdf072-988e-4d36-ada6-03085e2c369e)
 
