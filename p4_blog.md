@@ -56,3 +56,37 @@ El resultado de la parte Deliverativa:
 
 [Screencast from 2024-11-26 23-24-22.webm](https://github.com/user-attachments/assets/effdf072-988e-4d36-ada6-03085e2c369e)
 
+## 3. Navegación local
+## 3. Navegación local
+
+Una vez que contamos con el mapa de costes, que ahora contiene un gradiente que indica la distancia desde el objetivo, el siguiente paso es permitir que el vehículo navegue hacia su destino de manera segura. Para ello, en lugar de considerar solo los vecinos inmediatamente cercanos al vehículo, he implementado un enfoque más dinámico y predictivo utilizando una especie de "donut" alrededor del coche. Este enfoque nos permite elegir el vecino con el coste más bajo dentro de un área más amplia, lo que nos da una mayor anticipación y evita que el coche se enfoque únicamente en el terreno inmediato.
+
+Este "donut" se genera mediante un recorte de la cuadrícula de costes (cost grid) usando *slicing* en NumPy. Primero, selecciono un recuadro rectangular de dimensiones definidas por una constante alrededor del vehículo. Luego, dentro de esa área, creo un recuadro más pequeño, centrado en el mismo punto. El objetivo es comparar los costos en esta área ampliada y elegir el vecino con el coste más bajo, lo que nos permite hacer un movimiento más suave y anticipado en lugar de tomar decisiones basadas solo en los vecinos más cercanos.
+
+## Cálculo de direcciones relativas para la navegación
+
+Una vez que hemos obtenido las coordenadas del vecino seleccionado como el próximo objetivo, el siguiente paso es calcular las direcciones relativas que el vehículo debe seguir para alcanzar ese punto. Esto implica determinar los cambios en las coordenadas en relación con la posición actual del vehículo, de modo que podamos calcular cómo debe moverse el vehículo para llegar al vecino.
+
+Para facilitar este proceso, las velocidades **V** y **W** se refieren a los movimientos del vehículo en dos ejes de un sistema de coordenadas local, relativo al vehículo. 
+
+- **V** representa la velocidad en el eje **X**, que indica cómo el vehículo debe moverse hacia adelante o hacia atrás en su propio sistema de referencia.
+- **W** se refiere a la velocidad en el eje **Y**, que determina el movimiento lateral o la rotación del vehículo alrededor de su eje Z.
+
+El uso de **V** y **W** tiene sentido porque estamos trabajando en un sistema de coordenadas local, donde el movimiento del vehículo se define en función de su propia orientación y posición. En lugar de calcular los movimientos basados en un sistema de coordenadas global o absoluto, que podría complicar el proceso, trabajamos con velocidades relativas al vehículo mismo. Esto nos permite determinar de manera eficiente las direcciones en las que el vehículo debe moverse para llegar al vecino seleccionado, sin necesidad de referencias externas.
+
+Es crucial asegurarse de que los valores de **V** y **W** estén dentro de un rango razonable, por lo que se utiliza un *clamp* para evitar que las velocidades sean demasiado grandes o pequeñas. El *clamp* garantiza que el vehículo no intente moverse a velocidades que puedan resultar inestables o inseguras, manteniendo el control en todo momento y asegurando un movimiento suave y controlado. 
+
+De este modo, al calcular las direcciones relativas mediante **V** y **W**, podemos guiar al vehículo de manera eficiente hacia su objetivo, tomando en cuenta tanto su posición actual como su orientación, sin necesidad de manipular directamente las coordenadas globales.
+
+```python3
+    best_neighbour_cell = get_best_neighbour(car_grid, cost_grid_map, world_map)
+    best_neighbour_pos = GUI.gridToWorld(best_neighbour_cell)
+    neighbour_relative = absolute2relative(best_neighbour_pos[1], best_neighbour_pos[0],
+        car_pose.x, car_pose.y, car_pose.yaw)
+
+    V = np.clip(neighbour_relative[0] * 2, 3, 9)
+    W = np.clip(neighbour_relative[1], -3, 3)
+```
+
+
+
