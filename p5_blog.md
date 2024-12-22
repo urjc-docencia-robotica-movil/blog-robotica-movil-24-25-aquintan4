@@ -14,3 +14,41 @@ Para implementar esto, utilizo los datos de odometría proporcionados por `HAL.g
 
 *Ejemplo de aplicación del modelo probabilístico de movimiento*<br>
 ![motion_particles](https://github.com/user-attachments/assets/e6921a57-1ea8-485a-9ace-14570b208f62)
+
+En este punto, ya tenemos las partículas distribuidas aleatoriamente en el mundo (dentro de la zona de nuestro mapa) y siguiendo el movimiento del robot. Ahora necesitamos asignar un peso (`weights` en el código) a cada partícula para determinar qué tan probable es que esa partícula represente la posición real del robot. 
+
+¿Cómo sabemos si una partícula representa la posición del robot? Comparando:
+
+1. **Percepción sensorial real** del robot (a la que tenemos acceso directamente, en este caso es el láser real del robot).
+2. **Percepción teórica o virtual** que tendría el robot si estuviera en la posición de esa partícula.
+
+Para calcular esta percepción teórica, he implementado un algoritmo de ray tracing basado en el algoritmo **DDA** (Digital Differential Analyzer). Este algoritmo genera un rayo desde la posición de la partícula y lo avanza hasta que encuentra un obstáculo en el mapa o alcanza la distancia máxima medible por el sensor láser (en nuestro caso, esta distancia es 10, obtenida haciendo un `print(HAL.getLaserData().max_dist)`).
+
+El cálculo de la percepción láser teórica es computacionalmente costoso, ya que implica trazar múltiples rayos para todas las partículas en cada ciclo de ejecución. Para acelerar este proceso, he implementado varias optimizaciones:
+
+1. **Ejecución en paralelo con multiprocessing**: Utilizo varios hilos de ejecución distribuidos en todos los núcleos disponibles de la CPU. Esto permite que los cálculos de los láseres teóricos de todas las partículas se realicen en paralelo, reduciendo significativamente el tiempo necesario.
+
+2. **Reducción del número de haces del láser**: En lugar de trabajar con los 180 haces que genera el láser por defecto, utilizo la constante `LASER_NUM_BEAMS` para limitar el número de haces analizados. Con solo 5 haces es suficiente para obtener información representativa del entorno, lo que reduce considerablemente la carga computacional.
+
+3. **Saltos en el ray tracing**: Para evitar pintar un láser perfecto píxel a píxel en el mapa, empleo la constante `RAYTRACING_SKIP_STEPS`, que permite avanzar en saltos durante el trazado del rayo. Esto optimiza el cálculo al obtener prácticamente la misma información pero en menos tiempo.
+
+Estas estrategias combinadas hacen que el cálculo de la percepción teórica sea más eficiente y rápida sacrificando exactitud y precisión.
+
+Una vez obtenida la percepción real y la percepción teórica, calculo qué tan similares son utilizando la fórmula vista en clase:
+
+![image](https://github.com/user-attachments/assets/b8467978-a312-401e-9387-6b0da849d611)
+
+
+La fórmula refleja la intuición de que, cuanto más similares sean las percepciones sensoriales (real y teórica), mayor será la probabilidad de que esa partícula represente la posición del robot. 
+
+Donde:
+
+* Distancia_manhattan: es la suma de las diferencias absolutas entre los valores de cada vector láser (real y teórico).
+* e : es el número de Euler.
+1. **Mayor parecido**: Si la distancia Manhattan es 0 (es decir, los vectores son idénticos), el exponente será \( e^0 \), lo que resulta en un peso de 1, indicando máxima probabilidad.
+2. **Menor parecido**: A medida que la distancia Manhattan aumenta, el exponente negativo hace que el peso tienda a 0, lo que refleja una probabilidad nula.
+
+También hago una normalización para que la suma de los pesos de las partículas sea 1.
+
+### Resample
+Ahora solo 
