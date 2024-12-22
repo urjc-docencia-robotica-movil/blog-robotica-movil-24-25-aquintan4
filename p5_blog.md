@@ -12,5 +12,5 @@ El siguiente paso consiste en aplicar el modelo probabilístico de movimiento. S
 
 Para implementar esto, utilizo los datos de odometría proporcionados por `HAL.getOdom()` . **Comparo la odometría en el instante t con la del instante anterior t−1** para calcular los incrementos en las coordenadas x, y y en el ángulo yaw. Estas diferencias se aplican al movimiento de las partículas, junto con un modelo de ruido que introduce pequeñas variaciones aleatorias en las posiciones y orientaciones, permitiendo que las partículas reflejen más realista el desplazamiento del robot, teniendo en cuenta las incertidumbres del sistema.
 
-*Ejemplo de aplicación del modelo probabilístico*
+*Ejemplo de aplicación del modelo probabilístico de movimiento*<br>
 ![motion_particles](https://github.com/user-attachments/assets/e6921a57-1ea8-485a-9ace-14570b208f62)
