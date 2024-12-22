@@ -51,4 +51,11 @@ Donde:
 También hago una normalización para que la suma de los pesos de las partículas sea 1.
 
 ### Resample
-Ahora solo 
+#### Remuestreo de partículas
+
+El último paso en el proceso consiste en tomar nuevas muestras basadas en las partículas anteriores, priorizando aquellas que tienen un mayor peso. Las partículas con mayor peso serán los candidatos ideales para ser remuestreadas, y para evitar que todas las partículas se ubiquen exactamente en las mismas posiciones, se les añade un ruido, basado en el **algoritmo de la ruleta**.
+
+Para implementar este remuestreo de manera sencilla, utilizo la función `np.random.choice` de NumPy, donde se elige una nueva muestra de partículas de la colección original, con la probabilidad de selección (argumento `p=`) determinada por los pesos calculados previamente. Es decir, las partículas de la siguiente generación estarán distribuidas con mayor probabilidad cerca de las partículas con mayor peso de la generación anterior. Esto permite que el algoritmo afine gradualmente la estimación de la posición del robot.
+
+Adicionalmente, para introducir variabilidad y evitar la sobreconfianza en una sola ubicación, añado ruido a las nuevas partículas. Este ruido se genera siguiendo una desviación estándar definida en las constantes `RESAMPLE_XY_NOISE_STD` y `RESAMPLE_ANGLE_NOISE_STD`, lo que permite un ajuste realista a la localización.
+
