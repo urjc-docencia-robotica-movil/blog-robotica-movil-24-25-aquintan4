@@ -59,3 +59,5 @@ Para implementar este remuestreo de manera sencilla, utilizo la función `np.ran
 
 Adicionalmente, para introducir variabilidad y evitar la sobreconfianza en una sola ubicación, añado ruido a las nuevas partículas. Este ruido se genera siguiendo una desviación estándar definida en las constantes `RESAMPLE_XY_NOISE_STD` y `RESAMPLE_ANGLE_NOISE_STD`, lo que permite un ajuste realista a la localización.
 
+El resultado es bueno teniendo en cuenta que debido a la potencia de mi ordenador solo he podido utilizar 100 partículas, converge correctamente en todas las pruebas. [Resultado](https://www.dropbox.com/scl/fi/mhn8tt9sjrejyad6yvvjb/Screencast-from-2024-12-22-17-03-18.webm?rlkey=zt5u5553q4zg9j054jcbw3wi6&st=7qh6l0p5&dl=0)
+
